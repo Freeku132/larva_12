@@ -37,9 +37,8 @@ class AuthController extends Controller
         catch (\Exception $exception)
         {
             Log::error($exception->getMessage());
+            return response()->json(['message' => __('Unexpected error, try register account later')], 500);
         }
-
-        return response()->json(['error' => __('Unexpected error, try register account later')], 500);
     }
 
     /**
@@ -65,7 +64,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
-        return response()->json(['status' => 'success']);
+        try {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'success']);
+        }
+        catch (\Exception $exception)
+        {
+            Log::error($exception->getMessage());
+            return response()->json(['message' => __('Something went wrong')],500);
+        }
     }
 }

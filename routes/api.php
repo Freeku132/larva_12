@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Store\OrderController;
+use App\Http\Controllers\Store\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
         $user = $request->user();
         return response()->json(['pong' => true, 'user' => $user]);
     });
+
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('orders',   OrderController::class);
 });
